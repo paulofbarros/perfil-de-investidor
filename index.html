@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubra Seu Perfil de Investidor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .intro-text {
+            background: #f8f9fa;
+            border-left: 5px solid #9b59b6;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .question-container {
+            margin-bottom: 25px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .question-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #27ae60;
+            background: #e8f5e8;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin: 30px 0;
+            transition: transform 0.3s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .calculate-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            display: none;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .result-profile {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .result-description {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .characteristics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .characteristic {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .characteristic-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .investment-suggestions {
+            background: white;
+            color: #2c3e50;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .suggestion-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #27ae60;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .characteristics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Descubra Seu Perfil de Investidor</h1>
+            <p>Baseado no Capítulo 4 - "Autoconhecimento Financeiro"</p>
+        </div>
+
+        <div class="intro-text">
+            <h3>💡 Por que isso importa?</h3>
+            <p>Como ensina o livro "A Arquitetura da Riqueza", conhecer seu perfil de investidor é fundamental para construir uma estratégia alinhada com sua personalidade e objetivos. Cada perfil tem características únicas que determinam a melhor abordagem de investimento.</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+
+        <form id="profileTest">
+            <!-- Pergunta 1 -->
+            <div class="question-container">
+                <div class="question-number">1</div>
+                <div class="question-text">Como você reage quando sua carteira cai 15% em um mês?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="1">
+                        <span class="option-text">Fico desesperado e vendo tudo imediatamente</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="2">
+                        <span class="option-text">Fico muito nervoso, mas tento esperar um pouco</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="3">
+                        <span class="option-text">Fico preocupado, mas mantenho as posições</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="4">
+                        <span class="option-text">Vejo como oportunidade de comprar mais</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="5">
+                        <span class="option-text">Analiso friamente se é hora de rebalancear</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="question-container">
+                <div class="question-number">2</div>
+                <div class="question-text">Qual seu horizonte temporal típico para investimentos?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="1">
+                        <span class="option-text">Menos de 1 ano - preciso do dinheiro em breve</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="2">
+                        <span class="option-text">1 a 3 anos - objetivos de médio prazo</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="3">
+                        <span class="option-text">3 a 10 anos - construindo patrimônio</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="4">
+                        <span class="option-text">10 a 20 anos - aposentadoria futura</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="5">
+                        <span class="option-text">Mais de 20 anos - legado geracional</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="question-container">
+                <div class="question-number">3</div>
+                <div class="question-text">Qual sua abordagem preferida para escolher investimentos?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="1">
+                        <span class="option-text">Sigo recomendações do gerente do banco</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="2">
+                        <span class="option-text">Leio análises e sigo especialistas</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="3">
+                        <span class="option-text">Combino análise própria com opinião de terceiros</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="4">
+                        <span class="option-text">Faço minha própria análise fundamentalista</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="5">
+                        <span class="option-text">Vou contra o consenso quando vejo valor</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Pergunta 4 -->
+            <div class="question-container">
+                <div class="question-number">4</div>
+                <div class="question-text">Com que frequência você gostaria de acompanhar seus investimentos?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="1">
+                        <span class="option-text">Diariamente - gosto de estar sempre informado</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="2">
+                        <span class="option-text">Semanalmente - verificação regular</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="3">
+                        <span class="option-text">Mensalmente - acompanhamento moderado</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="4">
+                        <span class="option-text">Trimestralmente - revisões estratégicas</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="5">
+                        <span class="option-text">Anualmente - foco no longo prazo</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Pergunta 5 -->
+            <div class="question-container">
+                <div class="question-number">5</div>
+                <div class="question-text">Qual percentual máximo de queda você aceitaria em 1 ano?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="1">
+                        <span class="option-text">Máximo 5% - preservação é prioridade</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="2">
+                        <span class="option-text">Até 15% - algum risco é aceitável</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="3">
+                        <span class="option-text">Até 25% - risco moderado por retorno</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="4">
+                        <span class="option-text">Até 40% - busco retornos altos</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="5">
+                        <span class="option-text">Mais de 40% - foco no longo prazo</span>
+                    </label>
+                </div>
+            </div>
+        </form>
+
+        <button class="calculate-btn" id="calculateBtn" onclick="calculateProfile()" disabled>
+            🔍 Descobrir Meu Perfil
+        </button>
+
+        <div class="result" id="result">
+            <div class="result-profile" id="profileName"></div>
+            <div class="result-description" id="profileDescription"></div>
+            
+            <div class="characteristics" id="characteristics"></div>
+            
+            <div class="investment-suggestions">
+                <h3>💼 Sugestões de Investimento para seu Perfil</h3>
+                <div class="suggestions-grid" id="suggestions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const profiles = {
+            conservador: {
+                name: "🛡️ CONSERVADOR",
+                description: "Você prioriza a segurança e previsibilidade. Sua estratégia deve focar na preservação de capital com retornos estáveis.",
+                characteristics: [
+                    {
+                        title: "Tolerância ao Risco",
+                        value: "Baixa - Preservação acima de tudo"
+                    },
+                    {
+                        title: "Horizonte Temporal",
+                        value: "Curto a médio prazo"
+                    },
+                    {
+                        title: "Objetivo Principal",
+                        value: "Proteção do capital"
+                    },
+                    {
+                        title: "Volatilidade Aceita",
+                        value: "Mínima (até 5%)"
+                    }
+                ],
+                suggestions: [
+                    "Tesouro Direto",
+                    "CDBs",
+                    "LCIs/LCAs",
+                    "Fundos DI",
+                    "Poupança Plus"
+                ]
+            },
+            moderado: {
+                name: "⚖️ MODERADO", 
+                description: "Você busca equilíbrio entre segurança e crescimento. Aceita alguma volatilidade em troca de retornos superiores à renda fixa.",
+                characteristics: [
+                    {
+                        title: "Tolerância ao Risco",
+                        value: "Média - Equilíbrio é a chave"
+                    },
+                    {
+                        title: "Horizonte Temporal", 
+                        value: "Médio prazo (3-10 anos)"
+                    },
+                    {
+                        title: "Objetivo Principal",
+                        value: "Crescimento controlado"
+                    },
+                    {
+                        title: "Volatilidade Aceita",
+                        value: "Moderada (até 25%)"
+                    }
+                ],
+                suggestions: [
+                    "FIIs (60%)",
+                    "ETFs Brasil",
+                    "Ações Blue Chips",
+                    "Fundos Multimercado",
+                    "Tesouro IPCA+"
+                ]
+            },
+            agressivo: {
+                name: "🚀 AGRESSIVO",
+                description: "Você busca retornos elevados e aceita alta volatilidade. Foca no crescimento acelerado do patrimônio no longo prazo.",
+                characteristics: [
+                    {
+                        title: "Tolerância ao Risco",
+                        value: "Alta - Crescimento é prioridade"
+                    },
+                    {
+                        title: "Horizonte Temporal",
+                        value: "Longo prazo (10+ anos)"
+                    },
+                    {
+                        title: "Objetivo Principal", 
+                        value: "Multiplicação do capital"
+                    },
+                    {
+                        title: "Volatilidade Aceita",
+                        value: "Alta (até 40%)"
+                    }
+                ],
+                suggestions: [
+                    "Ações Growth",
+                    "Small Caps",
+                    "ETFs Setoriais",
+                    "BDRs Globais",
+                    "Fundos de Ações"
+                ]
+            },
+            especulativo: {
+                name: "⚡ ESPECULATIVO",
+                description: "Você ama oportunidades de alto risco e alto retorno. Está confortável com grande volatilidade em busca de ganhos extraordinários.",
+                characteristics: [
+                    {
+                        title: "Tolerância ao Risco",
+                        value: "Muito Alta - All in no futuro"
+                    },
+                    {
+                        title: "Horizonte Temporal",
+                        value: "Variável - Oportunístico"
+                    },
+                    {
+                        title: "Objetivo Principal",
+                        value: "Ganhos exponenciais"
+                    },
+                    {
+                        title: "Volatilidade Aceita",
+                        value: "Extrema (50%+)"
+                    }
+                ],
+                suggestions: [
+                    "Criptomoedas",
+                    "Opções",
+                    "Day Trade",
+                    "IPOs/Novas Ações",
+                    "Forex"
+                ]
+            },
+            contrarian: {
+                name: "🎯 CONTRARIAN",
+                description: "Você investe contra a multidão, comprando no medo e vendendo na ganância. Busca valor onde outros veem apenas risco.",
+                characteristics: [
+                    {
+                        title: "Tolerância ao Risco",
+                        value: "Calculada - Valor acima do preço"
+                    },
+                    {
+                        title: "Horizonte Temporal",
+                        value: "Muito longo prazo (15+ anos)"
+                    },
+                    {
+                        title: "Objetivo Principal",
+                        value: "Value investing de qualidade"
+                    },
+                    {
+                        title: "Volatilidade Aceita",
+                        value: "Estratégica - Oportunidade"
+                    }
+                ],
+                suggestions: [
+                    "Value Stocks",
+                    "Ações Desprezadas",
+                    "Setores em Crise",
+                    "Mercados Emergentes",
+                    "Dividend Aristocrats"
+                ]
+            }
+        };
+
+        // Atualizar barra de progresso
+        function updateProgress() {
+            const totalQuestions = 5;
+            let answeredQuestions = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (document.querySelector(`input[name="q${i}"]:checked`)) {
+                    answeredQuestions++;
+                }
+            }
+            
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Habilitar botão quando todas as perguntas forem respondidas
+            const calculateBtn = document.getElementById('calculateBtn');
+            if (answeredQuestions === totalQuestions) {
+                calculateBtn.disabled = false;
+            } else {
+                calculateBtn.disabled = true;
+            }
+        }
+
+        // Adicionar event listeners para as opções
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('input[type="radio"]');
+            options.forEach(option => {
+                option.addEventListener('change', function() {
+                    // Remover seleção visual anterior
+                    const siblings = document.querySelectorAll(`input[name="${this.name}"]`);
+                    siblings.forEach(sibling => {
+                        sibling.closest('.option').classList.remove('selected');
+                    });
+                    
+                    // Adicionar seleção visual atual
+                    this.closest('.option').classList.add('selected');
+                    
+                    updateProgress();
+                });
+            });
+        });
+
+        function calculateProfile() {
+            const answers = [];
+            let totalScore = 0;
+            
+            // Coletar respostas
+            for (let i = 1; i <= 5; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (answer) {
+                    const value = parseInt(answer.value);
+                    answers.push(value);
+                    totalScore += value;
+                }
+            }
+            
+            // Determinar perfil baseado na pontuação
+            let profileKey;
+            const averageScore = totalScore / 5;
+            
+            if (averageScore <= 1.5) {
+                profileKey = 'conservador';
+            } else if (averageScore <= 2.5) {
+                profileKey = 'moderado';
+            } else if (averageScore <= 3.5) {
+                profileKey = 'agressivo';
+            } else if (averageScore <= 4.2) {
+                profileKey = 'especulativo';
+            } else {
+                profileKey = 'contrarian';
+            }
+            
+            // Mostrar resultado
+            displayResult(profileKey);
+        }
+
+        function displayResult(profileKey) {
+            const profile = profiles[profileKey];
+            
+            // Mostrar seção de resultado
+            document.getElementById('result').style.display = 'block';
+            
+            // Preencher informações do perfil
+            document.getElementById('profileName').textContent = profile.name;
+            document.getElementById('profileDescription').textContent = profile.description;
+            
+            // Preencher características
+            const characteristicsContainer = document.getElementById('characteristics');
+            characteristicsContainer.innerHTML = '';
+            
+            profile.characteristics.forEach(char => {
+                const charDiv = document.createElement('div');
+                charDiv.className = 'characteristic';
+                charDiv.innerHTML = `
+                    <div class="characteristic-title">${char.title}</div>
+                    <div>${char.value}</div>
+                `;
+                characteristicsContainer.appendChild(charDiv);
+            });
+            
+            // Preencher sugestões
+            const suggestionsContainer = document.getElementById('suggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            profile.suggestions.forEach(suggestion => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'suggestion-item';
+                suggestionDiv.innerHTML = `<strong>${suggestion}</strong>`;
+                suggestionsContainer.appendChild(suggestionDiv);
+            });
+            
+            // Rolar para o resultado
+            document.getElementById('result').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    </script>
+</body>
+</html>
